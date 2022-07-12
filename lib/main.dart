@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nosso_primeiro_projeto/screens/dashboard.dart';
-import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const FormScreen(),
+      home: const Dashboard(),
     );
   }
 }
