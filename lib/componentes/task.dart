@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:nosso_primeiro_projeto/componentes/difficulty.dart';
 
+// ignore: must_be_immutable
 class Task extends StatefulWidget {
   final String name;
   final int dificuldade;
+  final String photo;
 
-  const Task({
+  Task({
     Key? key,
     required this.name,
     required this.dificuldade,
+    required this.photo,
   }) : super(key: key);
+
+  int nivel = 0;
+  int maestria = 0;
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int nivel = 0;
-  int maestria = 0;
+
+  bool assetOrNetwork() {
+    if (widget.photo.contains('http')) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +43,15 @@ class _TaskState extends State<Task> {
             Container(
               height: 143,
               decoration: BoxDecoration(
-                color: (maestria == 0)
+                color: (widget.maestria == 0)
                     ? Colors.blue
-                    : (maestria == 1)
+                    : (widget.maestria == 1)
                         ? Colors.green
-                        : (maestria == 2)
+                        : (widget.maestria == 2)
                             ? Colors.yellow
-                            : (maestria == 3)
+                            : (widget.maestria == 3)
                                 ? Colors.red
-                                : (maestria == 4)
+                                : (widget.maestria == 4)
                                     ? Colors.black
                                     : Colors.blue,
                 borderRadius: BorderRadius.circular(10),
@@ -66,10 +77,10 @@ class _TaskState extends State<Task> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'images/Eu7m692XIAEvxxP.png',
+                          child: assetOrNetwork() ? Image.asset(
+                            widget.photo,
                             fit: BoxFit.cover,
-                          ),
+                          ) : Image.network(widget.photo, fit: BoxFit.cover,)
                         ),
                       ),
                       SizedBox(
@@ -97,11 +108,11 @@ class _TaskState extends State<Task> {
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                if (maestria <= 6) {
-                                  nivel++;
-                                  if (nivel == nivelMaestria) {
-                                    maestria++;
-                                    nivel = 0;
+                                if (widget.maestria <= 6) {
+                                  widget.nivel++;
+                                  if (widget.nivel == nivelMaestria) {
+                                    widget.maestria++;
+                                    widget.nivel = 0;
                                   }
                                 }
                               });
@@ -134,7 +145,7 @@ class _TaskState extends State<Task> {
                         child: LinearProgressIndicator(
                           color: Colors.white,
                           value: (widget.dificuldade > 0)
-                              ? (nivel / widget.dificuldade) / 10
+                              ? (widget.nivel / widget.dificuldade) / 10
                               : 1,
                         ),
                       ),
@@ -142,7 +153,7 @@ class _TaskState extends State<Task> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        'Nível: $nivel',
+                        'Nível: ${widget.nivel}',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,

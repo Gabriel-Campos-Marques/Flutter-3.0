@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nosso_primeiro_projeto/componentes/task.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
 import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -18,16 +18,8 @@ class _DashboardState extends State<Dashboard> {
         title: const Text('Tarefas'),
       ),
       body: ListView(
-        children: const [
-          Task(
-            name: 'Aprender flutter',
-            dificuldade: 3,
-          ),
-          Task(
-            name: 'Ler',
-            dificuldade: 5,
-          ),
-        ],
+        padding: const EdgeInsets.only(top: 8, bottom: 70),
+        children: TaskInherited.of(context).taskList,
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -35,7 +27,9 @@ class _DashboardState extends State<Dashboard> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const FormScreen(),
+              builder: (contextNew) => FormScreen(
+                taskContext: context,
+              ),
             ),
           );
         },
